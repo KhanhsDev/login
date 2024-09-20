@@ -18,6 +18,8 @@ export default function ManageUser() {
         localStorage.removeItem('loggedInUser'); // Xóa trạng thái đăng nhập
         router.push('/login'); // Chuyển hướng về trang đăng nhập
     }
+
+
     return (
         <div>
             <h1 className="w-full font-bold text-3xl text-center text-white mt-14">TODOS</h1>

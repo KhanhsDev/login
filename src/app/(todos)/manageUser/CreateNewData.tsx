@@ -9,9 +9,7 @@ export default function createNew() {
     const addNewSchema = Yup.object().shape({
         inputData: Yup.string().required('Missing input parameter'),
     });
-
-    const handleAddNew = (values: { inputData: string }) => {
-        console.log(values);
+    const handleAddNew = (values: { inputData: string }, resetForm: () => void) => {
         // lấy ra dữ liệu ở localstrorage nếu có
         const listTodos = JSON.parse(localStorage.getItem('listTodos') as string) || [];
         const {inputData} = values;
@@ -23,9 +21,10 @@ export default function createNew() {
         // cập nhật lại localstorage
         localStorage.setItem('listTodos', JSON.stringify(listTodos))
         mutate(listTodos)
+        resetForm()
     }
     const getListTodo = () => {
-        return typeof window !== 'undefined' && localStorage.getItem('listTodos')
+        return localStorage.getItem('listTodos')
             ? JSON.parse(localStorage.getItem('listTodos') as string)
             : [];
     };
@@ -41,11 +40,12 @@ export default function createNew() {
             <div className="mx-5">
                 <Formik
                     validationSchema={addNewSchema}
-                    onSubmit={handleAddNew}
+                    onSubmit={(values, {resetForm}) => handleAddNew(values, resetForm)}
                     initialValues={{
                         inputData: "",
                     }}
                 >
+
                     {({handleSubmit}) => (
                         <Form onSubmit={handleSubmit}>
                             <div className="flex">
